@@ -33,6 +33,14 @@ from version import __version__
 
 
 def main(settings: Settings, max_attempts: int = 10) -> Spoiler:
+    logging.basicConfig(
+        level = logging.DEBUG,
+        filename = "seed_generation.log",
+        filemode = "w",
+        format = "%(asctime)s %(levelname)s %(name)s: %(message)s",
+        encoding = "utf-8"
+    )
+    
     clear_hint_exclusion_cache()
     logger = logging.getLogger('')
     start = time.process_time()
