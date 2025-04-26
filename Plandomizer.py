@@ -1072,6 +1072,19 @@ class WorldDistribution:
     def configure_effective_starting_items(self, worlds: list[World], world: World) -> None:
         items = {item_name: record.copy() for item_name, record in self.starting_items.items()}
 
+        # ---------- Ice-Arrows <-> Blue-Fire-Arrows canonicalisation ----------
+        if world.settings.blue_fire_arrows:
+            # If the GUI/Plando config wants ice arrows,
+            # change them to blue fire for later logic and
+            # collect_starters() to hand out the correct arrows.
+            if "Ice Arrows" in items:
+                items["Blue Fire Arrows"] = items.pop("Ice Arrows")
+            else:
+                # Blue fire -> ice; do so when the feature is off.
+                if "Blue Fire Arrows" in items:
+                    items["Blue Fire Arrows"] = items.pop("Blue Fire Arrows")
+        # ----------------------------------------------------------------------
+
         if world.settings.start_with_rupees:
             add_starting_item_with_ammo(items, 'Rupees', 999)
         if world.settings.start_with_consumables:
